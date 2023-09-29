@@ -1,0 +1,107 @@
+// The program input for werewolf/src/main.leo
+/*
+[add_rpk_to_shuffle_list]
+rsk: scalar = 981234891918723scalar;
+r: scalar = 102398scalar;
+pk: group = 2group;
+loc: u8 = 1u8;
+list: ShuffleRoles = ShuffleRoles {
+  l1: ElgamalCipher {
+    c1: 2group,
+    c2: 2group
+  },
+  l2: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l3: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l4: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l5: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l6: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l7: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l8: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l9: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l10: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l11: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  },
+  l12: ElgamalCipher{
+    c1: 0group,
+    c2: 0group
+  }
+};
+*/
+[gen_role_list]
+role_1: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_2: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_3: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_4: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_5: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_6: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_7: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_8: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_9: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_10: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_11: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};
+role_12: ElgamalCipher = ElgamalCipher{
+    c1: 2group,
+    c2: 2group
+};

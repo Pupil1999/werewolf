@@ -1,0 +1,9 @@
+.env
+*.avm
+*.prover
+*.verifier
+outputs/
+__pycache__/
+run_leo/__pycache__
+old.py
+test.py
