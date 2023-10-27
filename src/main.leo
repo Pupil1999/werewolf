@@ -6,23 +6,6 @@ program werewolf.aleo {
         c2: group,
     }
 
-    // There is supposed to be 12 players in each game
-    // 4 - Villagers, 4 - Wolves, 1 - Witch, Seer, Protector, Hunter
-    struct RoleList {
-        l1: ElgamalCipher,
-        l2: ElgamalCipher,
-        l3: ElgamalCipher,
-        l4: ElgamalCipher,
-        l5: ElgamalCipher,
-        l6: ElgamalCipher,
-        l7: ElgamalCipher,
-        l8: ElgamalCipher,
-        l9: ElgamalCipher,
-        l10: ElgamalCipher,
-        l11: ElgamalCipher,
-        l12: ElgamalCipher,
-    }
-
     // Each player will sample a public key for shuffling,
     // the link between the key and the player is hidden
     // All the inputs are public, since they are the
@@ -132,10 +115,135 @@ program werewolf.aleo {
         };
     }
 
+    // There is supposed to be 12 players in each game
+    // 4 - Villagers, 4 - Wolves, 1 - Witch, Seer, Protector, Hunter
+    struct RoleList {
+        l1: ElgamalCipher,
+        l2: ElgamalCipher,
+        l3: ElgamalCipher,
+        l4: ElgamalCipher,
+        l5: ElgamalCipher,
+        l6: ElgamalCipher,
+        l7: ElgamalCipher,
+        l8: ElgamalCipher,
+        l9: ElgamalCipher,
+        l10: ElgamalCipher,
+        l11: ElgamalCipher,
+        l12: ElgamalCipher
+    }
+
+    struct Permutation {
+        p1: u8,
+        p2: u8,
+        p3: u8,
+        p4: u8,
+        p5: u8,
+        p6: u8,
+        p7: u8,
+        p8: u8,
+        p9: u8,
+        p10: u8,
+        p11: u8,
+        p12: u8
+    }
+
+    // Generate 12 permutation arguments for shuffle
+    transition prod_perm(
+        p1: u8,
+        p2: u8,
+        p3: u8,
+        p4: u8,
+        p5: u8,
+        p6: u8,
+        p7: u8,
+        p8: u8,
+        p9: u8,
+        p10: u8,
+        p11: u8,
+        p12: u8
+    ) -> Permutation {
+        assert(p1 >= 1u8 && p1 <= 12u8);
+        assert(p2 >= 1u8 && p2 <= 12u8);
+        assert(p3 >= 1u8 && p3 <= 12u8);
+        assert(p4 >= 1u8 && p4 <= 12u8);
+        assert(p5 >= 1u8 && p5 <= 12u8);
+        assert(p6 >= 1u8 && p6 <= 12u8);
+        assert(p7 >= 1u8 && p7 <= 12u8);
+        assert(p8 >= 1u8 && p8 <= 12u8);
+        assert(p9 >= 1u8 && p9 <= 12u8);
+        assert(p10 >= 1u8 && p10 <= 12u8);
+        assert(p11 >= 1u8 && p11 <= 12u8);
+        assert(p12 >= 1u8 && p12 <= 12u8);
+        assert(p1 != p2);assert(p1 != p3);assert(p1 != p4);assert(p1 != p5);
+        assert(p1 != p6);assert(p1 != p7);assert(p1 != p8);assert(p1 != p9);
+        assert(p1 != p10);assert(p1 != p11);assert(p1 != p12);assert(p2 != p3);
+        assert(p2 != p4);assert(p2 != p5);assert(p2 != p6);assert(p2 != p7);
+        assert(p2 != p8);assert(p2 != p9);assert(p2 != p10);assert(p2 != p11);
+        assert(p2 != p12);assert(p3 != p4);assert(p3 != p5);assert(p3 != p6);
+        assert(p3 != p7);assert(p3 != p8);assert(p3 != p9);assert(p3 != p10);
+        assert(p3 != p11);assert(p3 != p12);assert(p4 != p5);assert(p4 != p6);
+        assert(p4 != p7);assert(p4 != p8);assert(p4 != p9);assert(p4 != p10);
+        assert(p4 != p11);assert(p4 != p12);assert(p5 != p6);assert(p5 != p7);
+        assert(p5 != p8);assert(p5 != p9);assert(p5 != p10);assert(p5 != p11);
+        assert(p5 != p12);assert(p6 != p7);assert(p6 != p8);assert(p6 != p9);
+        assert(p6 != p10);assert(p6 != p11);assert(p6 != p12);assert(p7 != p8);
+        assert(p7 != p9);assert(p7 != p10);assert(p7 != p11);assert(p7 != p12);
+        assert(p8 != p9);assert(p8 != p10);assert(p8 != p11);assert(p8 != p12);
+        assert(p9 != p10);assert(p9 != p11);assert(p9 != p12);assert(p10 != p11);
+        assert(p10 != p12);assert(p11 != p12);
+
+        return Permutation {
+            p1: p1,
+            p2: p2,
+            p3: p3,
+            p4: p4,
+            p5: p5,
+            p6: p6,
+            p7: p7,
+            p8: p8,
+            p9: p9,
+            p10: p10,
+            p11: p11,
+            p12: p12,
+        };
+    }
+
+    inline resort(
+        list: RoleList,
+        index: u8
+    ) -> ElgamalCipher {
+        if(index == 1u8) {
+            return list.l1;
+        } else if(index == 2u8) {
+            return list.l2;
+        } else if(index == 3u8) {
+            return list.l3;
+        } else if(index == 4u8) {
+            return list.l4;
+        } else if(index == 5u8) {
+            return list.l5;
+        } else if(index == 6u8) {
+            return list.l6;
+        } else if(index == 7u8) {
+            return list.l7;
+        } else if(index == 8u8) {
+            return list.l8;
+        } else if(index == 9u8) {
+            return list.l9;
+        } else if(index == 10u8) {
+            return list.l10;
+        } else if(index == 11u8) {
+            return list.l11;
+        } else {
+            return list.l12;
+        }
+    }
+
     // Rerandomize the list and permutate it.
     transition shuffle(
         public prelist: RoleList,
         public pk: group,
+        // perm: Permutation,
         r1: scalar,
         r2: scalar,
         r3: scalar,
@@ -198,7 +306,7 @@ program werewolf.aleo {
             c2: prelist.l12.c2 + r12 * pk,
         };
 
-        return RoleList {
+        let list: RoleList = RoleList {
             l1: cc1,
             l2: cc2,
             l3: cc3,
@@ -211,7 +319,41 @@ program werewolf.aleo {
             l10:cc10,
             l11:cc11,
             l12:cc12,
-        };
+        };/*
+        By now, Aleo is still under intensive construction,
+        it cannot compile so many instructions into .aleo file,
+        so we just comment these permutation and do the
+        permutation in our python parser since the permutation
+        will produce 1500 instructions
+        // Permutate the list in the encrypted list
+        let l1: ElgamalCipher = resort(list, perm.p1);
+        let l2: ElgamalCipher = resort(list, perm.p2);
+        let l3: ElgamalCipher = resort(list, perm.p3);
+        let l4: ElgamalCipher = resort(list, perm.p4);
+        let l5: ElgamalCipher = resort(list, perm.p5);
+        let l6: ElgamalCipher = resort(list, perm.p6);
+        let l7: ElgamalCipher = resort(list, perm.p7);
+        let l8: ElgamalCipher = resort(list, perm.p8);
+        let l9: ElgamalCipher = resort(list, perm.p9);
+        let l10: ElgamalCipher = resort(list, perm.p10);
+        let l11: ElgamalCipher = resort(list, perm.p11);
+        let l12: ElgamalCipher = resort(list, perm.p12);
+        return RoleList {
+            l1: l1,
+            l2: l2,
+            l3: l3,
+            l4: l4,
+            l5: l5,
+            l6: l6,
+            l7: l7,
+            l8: l8,
+            l9: l9,
+            l10: l10,
+            l11: l11,
+            l12: l12
+        };*/
+        
+        return list;
     }
 
     transition dec_shuffled_list(
@@ -583,15 +725,15 @@ program werewolf.aleo {
     }
 
     transition rerand(
-        rand: bool,
-        public rpks: PublicRoleKeys,
-        rsk: scalar,
+        rand: bool, // rerand or decrypting?
+        public rpks: PublicRoleKeys, // used to constrain the behaviour
+        rsk: scalar, // the secret role key of this player
         ch: u8, // The choice from seer to check the role of some player
-        public list: CheckRoleList, // Ciphers
-        rands: TwelveRand,
-        r: scalar,
+        public list: CheckRoleList, // ciphers
+        rands: TwelveRand, // used for elgamal encryption
+        r: scalar, // used to embed a trapdoor in cipher
         public inx: u8, // Index when embedding roles into choices' ciphers
-        emdr: scalar
+        emdr: scalar // 
         ) -> CheckRoleList {
 
         assert( ch >= 1u8 && ch <= 12u8);
@@ -699,11 +841,10 @@ program werewolf.aleo {
         return plaintext == group::GEN;
     }
 
-    // 
     struct KillCipher {
-        kc1: ElgamalCipher,
-        kc2: ElgamalCipher,
-        kc3: ElgamalCipher
+        kc1: ElgamalCipher, // will encrypt the victim
+        kc2: ElgamalCipher, // will encrypt the protected role
+        kc3: ElgamalCipher  // will encrypt the victim with witch' public key
     }
     transition kill_init() -> KillCipher {
         return KillCipher {
@@ -712,30 +853,24 @@ program werewolf.aleo {
             kc3: ElgamalCipher{ c1: 0group, c2: 0group },
         };
     }
-    // 
+
     transition kill_vote(
         public pk: group, // the aggregated public key for encryption
         rsk: scalar, // the secret of voter
         ppk_v: group, // the public key of the victim
         ppk_p: group, // the public key of the protected player
-        rpks: PublicRoleKeys,
-        rpk_wolf: group,
-        er1: scalar,
-        er2: scalar,
-        er3: scalar,
-        public rpk_witch: group,
-        public pre: KillCipher
+        rpks: PublicRoleKeys, // used to constrain the behaviour
+        rpk_wolf: group, // the public key of the wolf who can kill people
+        er1: scalar, // rnd for elgamal encryption
+        er2: scalar, // rnd for elgamal encryption
+        er3: scalar, // rnd for elgamal encryption
+        public rpk_witch: group, // encrypt with witch's public key
+        public pre: KillCipher // the cipher of the last round
     ) -> KillCipher {
         let kc1: ElgamalCipher = ElgamalCipher {
             c1: pre.kc1.c1 + group::GEN * er1,
             c2: pre.kc1.c2 + pk * er1
         };
-        if(rsk * group::GEN == rpk_wolf) {
-            kc1 = ElgamalCipher {
-                c1: kc1.c1,
-                c2: kc1.c2 + ppk_v
-            };
-        }
 
         let kc2: ElgamalCipher = ElgamalCipher {
             c1: pre.kc2.c1 + group::GEN * er2,
@@ -752,6 +887,16 @@ program werewolf.aleo {
             c1: pre.kc3.c1 + group::GEN * er3,
             c2: pre.kc3.c2 + pk * er3 + rpk_witch * er3
         };
+        if(rsk * group::GEN == rpk_wolf) {
+            kc1 = ElgamalCipher {
+                c1: kc1.c1,
+                c2: kc1.c2 + ppk_v
+            };
+            kc3 = ElgamalCipher {
+                c1: kc3.c1,
+                c2: kc3.c2 + ppk_v
+            };
+        }
 
         return KillCipher {
             kc1: kc1,
@@ -761,12 +906,12 @@ program werewolf.aleo {
     }
 
     transition dec_kill_vote(
-        public pre: KillCipher,
+        public pre: KillCipher, // 3 rows for game killing
         psk: scalar,
         public dec_ch: u8,
         public init: bool, // if true, just sub the second row with the first row
         r: scalar, // used to raise the entropy for testing
-        rsk: scalar, 
+        rsk: scalar, // secret role key of witch
         public rpk_witch: group,
         save: bool, // whether the witch decides to save the victim
         public pk_: group, // intermediate public key in decryption
@@ -782,55 +927,62 @@ program werewolf.aleo {
                 kc3: pre.kc3
             };
         } else {
-        if(dec_ch == 1u8){ // decrypt the first row
-            // the witch can save the player
-            if(rsk * group::GEN == rpk_witch && save){
+            if(dec_ch == 1u8){ // decrypt the first row
+                // the witch can save the player
+                if(rsk * group::GEN == rpk_witch && save){
+                    return KillCipher {
+                        kc1: ElgamalCipher{
+                            c1: pre.kc1.c1,
+                            c2: pk_ * r
+                        },
+                        kc2: pre.kc2,
+                        kc3: pre.kc3
+                    };
+                } else { //
+                    return KillCipher {
+                        kc1: ElgamalCipher{
+                            c1: pre.kc1.c1,
+                            c2: pre.kc1.c2 - pre.kc1.c1 * psk
+                        },
+                        kc2: pre.kc2,
+                        kc3: pre.kc3
+                    };
+                }
+            } else if(dec_ch == 2u8){ // raise the entropy of the second row
                 return KillCipher {
-                    kc1: ElgamalCipher{
-                        c1: pre.kc1.c1,
-                        c2: pk_ * r
+                    kc1: pre.kc1,
+                    kc2: ElgamalCipher{
+                        c1: pre.kc2.c1 * r,
+                        c2: pre.kc2.c2 * r
                     },
-                    kc2: pre.kc2,
                     kc3: pre.kc3
                 };
-            } else { //
+            } else if(dec_ch == 3u8){ // decrypt the second row
                 return KillCipher {
-                    kc1: ElgamalCipher{
-                        c1: pre.kc1.c1,
-                        c2: pre.kc1.c2 - pre.kc1.c1 * psk
+                    kc1: pre.kc1,
+                    kc2: ElgamalCipher {
+                        c1: pre.kc2.c1,
+                        c2: pre.kc2.c2 - pre.kc2.c1 * psk
                     },
-                    kc2: pre.kc2,
                     kc3: pre.kc3
+                };
+            } else { // decrypt the last row, the final message if still protected by rpk_witch
+                return KillCipher {
+                    kc1: pre.kc1,
+                    kc2: pre.kc2,
+                    kc3: ElgamalCipher{
+                        c1: pre.kc3.c1,
+                        c2: pre.kc3.c2 - pre.kc3.c1 * psk
+                    }
                 };
             }
-        } else if(dec_ch == 2u8){ // raise the entropy of the second row
-            return KillCipher {
-                kc1: pre.kc1,
-                kc2: ElgamalCipher{
-                    c1: pre.kc2.c1 * r,
-                    c2: pre.kc2.c2 * r
-                },
-                kc3: pre.kc3
-            };
-        } else if(dec_ch == 3u8){ //  decrypt the second row
-            return KillCipher {
-                kc1: pre.kc1,
-                kc2: ElgamalCipher {
-                    c1: pre.kc2.c1,
-                    c2: pre.kc2.c2 - pre.kc2.c1 * psk
-                },
-                kc3: pre.kc3
-            };
-        } else { // decrypt the last row, the final message if still protected by rpk_witch
-            return KillCipher {
-                kc1: pre.kc1,
-                kc2: pre.kc2,
-                kc3: ElgamalCipher{
-                    c1: pre.kc3.c1,
-                    c2: pre.kc3.c2 - pre.kc3.c1 * psk
-                }
-            };
         }
-        }
+    }
+
+    transition witch_see_victim(
+        rsk: scalar,
+        public c: ElgamalCipher
+    ) -> group {
+        return c.c2 - c.c1 * rsk;
     }
 }

@@ -105,3 +105,6 @@ role_12: ElgamalCipher = ElgamalCipher{
     c1: 2group,
     c2: 2group
 };
+
+[elgamal_key_gen]
+sk: scalar = 123scalar;
